@@ -20,10 +20,6 @@ public class Server {
         System.out.println("+++++PORT++++++");
     }
 
-    public Server() {
-        // TODO Auto-generated constructor stub
-    }
-
     class ClientThread extends Thread {
         private Socket               mClientSocket;
         private Vector<ClientThread> mOtherClients;
