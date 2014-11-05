@@ -185,7 +185,7 @@ public class UdpServer {
                 System.out.print(ni.getName() + " ");
                 ArrayList<InetAddress> list = Collections.list(ni
                         .getInetAddresses());
-                for (int i = 1; i < list.size(); i = +2) {
+                for (int i = 0; i < list.size(); i++) {
                     System.out.println(list.get(i).getHostAddress());
                 }
             }

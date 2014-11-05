@@ -1,3 +1,6 @@
+package udp;
+
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -31,6 +34,11 @@ public class UdpClient implements Runnable {
                     DatagramPacket dp = new DatagramPacket(line.getBytes(),
                             line.length(), mConnectedAddress, mSocket.getPort());
                     mSocket.send(dp);
+                    
+                    DatagramPacket data = new DatagramPacket(new byte[256], new byte[256].length);
+                    mSocket.receive(data);
+                    String msg = new String(data.getData(), data.getOffset(), data.getLength());
+                    System.out.println(msg);
                 }
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -41,27 +49,22 @@ public class UdpClient implements Runnable {
     }
 
     public static void main(String[] args) {
-        if (args.length < 2) {
+        if (args.length < 1) {
             System.out
-                    .println("You can't run client without parameters! ip port");
+                    .println("You can't run client without parameters! port");
         } else {
-            String ipPattern = "^([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
-                    + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
-                    + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\."
-                    + "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
-            if (args[0].matches(ipPattern)) {
                 int port = 0;
                 try {
-                    port = Integer.parseInt(args[1]);
+                    port = 2222;
                 } catch (NumberFormatException nfe) {
                     System.out.println("bad port format.");
                     return;
                 }
                 DatagramSocket socket;
                 try {
-                    socket = new DatagramSocket(3333);
+                    socket = new DatagramSocket(Integer.parseInt(args[0]));
                     byte[] b = args[0].getBytes("UTF-16");
-                    InetAddress addres = InetAddress.getByName(args[0]);
+                    InetAddress addres = InetAddress.getLocalHost();
                     socket.connect(addres, port);
                     UdpClient client = new UdpClient(socket, addres);
                     System.out.println(socket.getInetAddress());
@@ -89,4 +92,4 @@ public class UdpClient implements Runnable {
             }
         }
     }
-}
+
